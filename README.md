@@ -13,5 +13,8 @@ uv pip install -r pyproject.toml
 uv run run_with_cache.py dir/script.py   # uv run run_with_cache.py creational_patterns/singleton.py 
 uv tool install poethepoet
 
-## 4. To clean up all downloaded models and cache:
+## 4. Run any script with Poe the Poet
+poe script_name   # Example: poe singleton
+
+## 5. To clean up all downloaded models and cache:
 rm -rf hf_cache  # Windows: rmdir /s /q hf_cache
