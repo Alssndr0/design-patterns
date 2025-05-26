@@ -14,29 +14,31 @@ You can build different versions of the analyzer (e.g., with or without text low
 while keeping the construction process readable and reusable.
 """
 
+from typing import Any, Dict, Optional
+
 from transformers import pipeline
+from transformers.pipelines.base import Pipeline
 
 
 class SentimentAnalyzerBuilder:
-    def __init__(self):
-        self._use_lowercase = False
-        self._threshold = 0.5
-        self._model_name = "distilbert-base-uncased-finetuned-sst-2-english"
+    def __init__(self) -> None:
+        self._use_lowercase: bool = False
+        self._threshold: float = 0.5
+        self._model_name: str = "distilbert-base-uncased-finetuned-sst-2-english"
 
-    def with_lowercase(self, use_lowercase=True):
+    def with_lowercase(self, use_lowercase: bool = True) -> "SentimentAnalyzerBuilder":
         self._use_lowercase = use_lowercase
         return self
 
-    def with_threshold(self, threshold):
+    def with_threshold(self, threshold: float) -> "SentimentAnalyzerBuilder":
         self._threshold = threshold
         return self
 
-    def with_model(self, model_name):
+    def with_model(self, model_name: str) -> "SentimentAnalyzerBuilder":
         self._model_name = model_name
         return self
 
-    def build(self):
-        # Returns a configured SentimentAnalyzer instance
+    def build(self) -> "SentimentAnalyzer":
         return SentimentAnalyzer(
             use_lowercase=self._use_lowercase,
             threshold=self._threshold,
@@ -45,19 +47,24 @@ class SentimentAnalyzerBuilder:
 
 
 class SentimentAnalyzer:
-    def __init__(self, use_lowercase=False, threshold=0.5, model_name=None):
+    def __init__(
+        self,
+        use_lowercase: bool = False,
+        threshold: float = 0.5,
+        model_name: Optional[str] = None,
+    ) -> None:
         print(f"[SentimentAnalyzer] Loading model '{model_name}'...")
-        self.pipeline = pipeline("sentiment-analysis", model=model_name)
+        self.pipeline: Pipeline = pipeline("sentiment-analysis", model=model_name)
         print("[SentimentAnalyzer] Pipeline loaded.")
-        self.use_lowercase = use_lowercase
-        self.threshold = threshold
+        self.use_lowercase: bool = use_lowercase
+        self.threshold: float = threshold
 
-    def analyze(self, text):
+    def analyze(self, text: str) -> Dict[str, Any]:
         print(f"[SentimentAnalyzer] Original text: '{text}'")
         if self.use_lowercase:
             text = text.lower()
             print(f"[SentimentAnalyzer] Lowercased text: '{text}'")
-        result = self.pipeline(text)[0]
+        result: Dict[str, Any] = self.pipeline(text)[0]
         print(f"[SentimentAnalyzer] Raw model output: {result}")
         # Apply a custom threshold, e.g., for negative label
         if result["score"] < self.threshold:
@@ -70,15 +77,15 @@ class SentimentAnalyzer:
 
 if __name__ == "__main__":
     print("\n--- Building Analyzer without lower case and threshold = 0.9 ---")
-    analyzer1 = (
+    analyzer1: SentimentAnalyzer = (
         SentimentAnalyzerBuilder().with_lowercase(False).with_threshold(0.9).build()
     )
-    result1 = analyzer1.analyze("I think I may like this product...")
+    result1: Dict[str, Any] = analyzer1.analyze("I think I may like this product...")
     print(f"Result 1: {result1}")
 
     print("\n--- Building Analyzer with lowercasing and threshold = 0.99999 ---")
-    analyzer2 = (
+    analyzer2: SentimentAnalyzer = (
         SentimentAnalyzerBuilder().with_lowercase(True).with_threshold(0.99999).build()
     )
-    result2 = analyzer2.analyze("I think I may like this product...")
+    result2: Dict[str, Any] = analyzer2.analyze("I think I may like this product...")
     print(f"Result 2: {result2}")
