@@ -10,3 +10,10 @@ dependencies = [
     "ruff>=0.11.11",
     "transformers>=4.52.3",
 ]
+
+[tool.poe.tasks]
+singleton = "uv run run_with_cache.py creational_patterns/singleton.py" 
+prototype = "uv run run_with_cache.py creational_patterns/prototype.py"
+builder = "uv run run_with_cache.py creational_patterns/builder.py"
+abstract_factory = "uv run run_with_cache.py creational_patterns/abstract_factory.py"
+factory_method = "uv run run_with_cache.py creational_patterns/factory_method.py"

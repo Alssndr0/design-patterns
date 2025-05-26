@@ -28,6 +28,7 @@ uv init
 # 4. Install required packages
 UV_TORCH_BACKEND=auto uv pip install torch
 uv pip install -r pyproject.toml
+uv tool install poethepoet
 
 # 5. Make sure Hugging Face cache is local (persistent, project folder)
 export HF_HOME="$(pwd)/hf_cache"

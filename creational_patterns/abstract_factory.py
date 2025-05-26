@@ -117,7 +117,7 @@ if __name__ == "__main__":
     )
 
     print("\n--- Using Vision pipeline (Image Classification) ---")
-    img_path: str = "../assets/puppy.jpg"
+    img_path: str = "assets/puppy.jpg"
     image: Image.Image = Image.open(img_path)
     vision_factory: AIPipelineFactory = VisionPipelineFactory()
     run_pipeline(vision_factory, model="google/vit-base-patch16-224", data=image)
